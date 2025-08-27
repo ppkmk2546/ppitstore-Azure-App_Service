@@ -1,0 +1,118 @@
+warning: LF will be replaced by CRLF in resources/views/livewire/admin/admin-add-product-component.blade.php.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in resources/views/livewire/admin/admin-edit-product-component.blade.php.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in routes/api.php.
+The file will have its original line endings in your working directory
+[1mdiff --git a/public/assets/images/Product_sku.txt b/public/assets/images/Product_sku.txt[m
+[1mindex 8da5bf6..2348f18 100644[m
+[1m--- a/public/assets/images/Product_sku.txt[m
+[1m+++ b/public/assets/images/Product_sku.txt[m
+[36m@@ -18,6 +18,7 @@[m [mheadset = HPSM###[m
+ array("cpu","Gaming","harddisk","headset","keyboard","monitor","mouse","notebook","ram");[m
+ [m
+ 1# cpu = harddisk, gaming, mouse, headset, cpu , harddisk, keyboard, gaming, cpu, monitor[m
+[32m+[m
+ 2# cpu = mouse, harddisk, harddisk, cpu, monitor, hardisk, mouse, mouse, harddisk, mouse[m
+ [m
+ #Harddisk python D:\xampp\htdocs\project\vitzard-laravel\app\python\voice_rec.py test_rec\1646324967vdata.wav[m
+[1mdiff --git a/public/assets/images/products/1646339803.png b/public/assets/images/products/1646339803.png[m
+[1mdeleted file mode 100644[m
+[1mindex b21a57d..0000000[m
+Binary files a/public/assets/images/products/1646339803.png and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463398030.png b/public/assets/images/products/16463398030.png[m
+[1mdeleted file mode 100644[m
+[1mindex 10f4a68..0000000[m
+Binary files a/public/assets/images/products/16463398030.png and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463398031.png b/public/assets/images/products/16463398031.png[m
+[1mdeleted file mode 100644[m
+[1mindex 9209f8c..0000000[m
+Binary files a/public/assets/images/products/16463398031.png and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463398032.png b/public/assets/images/products/16463398032.png[m
+[1mdeleted file mode 100644[m
+[1mindex 0a85d12..0000000[m
+Binary files a/public/assets/images/products/16463398032.png and /dev/null differ
+[1mdiff --git a/public/assets/images/products/1646339927.jpg b/public/assets/images/products/1646339927.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 26b6c11..0000000[m
+Binary files a/public/assets/images/products/1646339927.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/1646340056.jpg b/public/assets/images/products/1646340056.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 5314a5d..0000000[m
+Binary files a/public/assets/images/products/1646340056.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463400560.jpg b/public/assets/images/products/16463400560.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 050d4b2..0000000[m
+Binary files a/public/assets/images/products/16463400560.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463400561.jpg b/public/assets/images/products/16463400561.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 106ff26..0000000[m
+Binary files a/public/assets/images/products/16463400561.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/1646340247.jpg b/public/assets/images/products/1646340247.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 4b9274c..0000000[m
+Binary files a/public/assets/images/products/1646340247.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463402470.jpg b/public/assets/images/products/16463402470.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 1ec7374..0000000[m
+Binary files a/public/assets/images/products/16463402470.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463402471.jpg b/public/assets/images/products/16463402471.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex b873d14..0000000[m
+Binary files a/public/assets/images/products/16463402471.jpg and /dev/null differ
+[1mdiff --git a/public/assets/images/products/16463402472.jpg b/public/assets/images/products/16463402472.jpg[m
+[1mdeleted file mode 100644[m
+[1mindex 5d4c494..0000000[m
+Binary files a/public/assets/images/products/16463402472.jpg and /dev/null differ
+[1mdiff --git a/resources/views/livewire/admin/admin-add-product-component.blade.php b/resources/views/livewire/admin/admin-add-product-component.blade.php[m
+[1mindex 3222b1e..4c8cd84 100644[m
+[1m--- a/resources/views/livewire/admin/admin-add-product-component.blade.php[m
+[1m+++ b/resources/views/livewire/admin/admin-add-product-component.blade.php[m
+[36m@@ -146,7 +146,7 @@[m
+         $(function(){[m
+             tinymce.init({[m
+                 selector: '#description',[m
+[31m-                plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinymcespellchecker',[m
+[32m+[m[32m                plugins: 'autolink lists media table',[m
+                 setup:function(editor){[m
+                     editor.on('change',function(e){[m
+                         tinyMCE.triggerSave();[m
+[1mdiff --git a/resources/views/livewire/admin/admin-edit-product-component.blade.php b/resources/views/livewire/admin/admin-edit-product-component.blade.php[m
+[1mindex cecaed5..ed1357f 100644[m
+[1m--- a/resources/views/livewire/admin/admin-edit-product-component.blade.php[m
+[1m+++ b/resources/views/livewire/admin/admin-edit-product-component.blade.php[m
+[36m@@ -152,7 +152,7 @@[m
+         $(function(){[m
+             tinymce.init({[m
+                 selector: '#description',[m
+[31m-                plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinymcespellchecker',[m
+[32m+[m[32m                plugins: 'autolink lists media table',[m
+                 setup:function(editor){[m
+                     editor.on('change',function(e){[m
+                         tinyMCE.triggerSave();[m
+[1mdiff --git a/routes/api.php b/routes/api.php[m
+[1mindex eb6fa48..39b2f90 100644[m
+[1m--- a/routes/api.php[m
+[1m+++ b/routes/api.php[m
+[36m@@ -2,6 +2,7 @@[m
+ [m
+ use Illuminate\Http\Request;[m
+ use Illuminate\Support\Facades\Route;[m
+[32m+[m[32muse App\Http\Controllers\API\UserController;[m
+ [m
+ /*[m
+ |--------------------------------------------------------------------------[m
+[36m@@ -14,6 +15,13 @@[m [muse Illuminate\Support\Facades\Route;[m
+ |[m
+ */[m
+ [m
+[32m+[m[32mRoute::post('/register', [App\Http\Controllers\API\UserController::class, 'register']);[m
+[32m+[m[32mRoute::post('/login', [App\Http\Controllers\API\UserController::class, 'login']);[m
+[32m+[m
+[32m+[m[32mRoute::group(['middleware' => ['auth:sanctum']], function () {[m
+[32m+[m[32m    Route::post('/logout', [App\Http\Controllers\API\UserController::class, 'logout']);[m
+[32m+[m[32m});[m
+[32m+[m
+ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {[m
+     return $request->user();[m
+ });[m

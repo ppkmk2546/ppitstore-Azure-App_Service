@@ -1,0 +1,30 @@
+cpu amd = CPAM###
+cpu intel = CPIN###
+mainboard = MTBH###
+graphic card = GPCD###
+case = CSPC###
+hard disk = HDST##
+solid state disk = SDST###
+monitor = MOGN###
+computer brands = CBMF##
+ram = RMBS###
+notebook = NBNM###
+notebook gaming = NBGM###
+keyboard = KBGM###
+software = SWCP###
+another = VZCM###
+headset = HPSM###
+
+array("cpu","Gaming","harddisk","headset","keyboard","monitor","mouse","notebook","ram");
+
+1# cpu = harddisk, gaming, mouse, headset, cpu , harddisk, keyboard, gaming, cpu, monitor
+
+2# cpu = mouse, harddisk, harddisk, cpu, monitor, hardisk, mouse, mouse, harddisk, mouse
+
+#Harddisk python D:\xampp\htdocs\project\vitzard-laravel\app\python\voice_rec.py test_rec\1646324967vdata.wav
+
+1# test python D:\xampp\htdocs\project\vitzard-laravel\app\python\voice_rec.py test_rec\1646325036vdata.wav
+1# test python D:\xampp\htdocs\project\vitzard-laravel\app\python\voice_rec.py test_rec\1646325105vdata.wav
+
+2#test python D:\xampp\htdocs\project\vitzard-laravel\app\python\voice_rec.py test_rec\1646329810vdata.wav
+

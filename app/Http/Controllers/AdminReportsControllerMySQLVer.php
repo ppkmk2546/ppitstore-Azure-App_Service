@@ -1,0 +1,323 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Livewire\Component;
+
+class AdminReportsController extends Controller
+{
+
+    public function Piechart()
+    {
+        $time = time();
+        $data['cur_month'] = date("m",$time);
+        $sql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+        LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+        WHERE YEAR(orders.created_at) = YEAR(CURDATE()) AND transactions.status='approved' AND orders.status='delivered';";
+        $chartresult = DB::select($sql);
+        $category = Category::all();
+        $category_name = [];
+        $setyor = [];
+        $category_name[0] = "Category";
+        $category_name[1] = "Total";
+        $setyor[0] = $category_name;
+
+        foreach ($category as $Mainkey => $value) {
+        $total = 0.00;
+        $result = [];
+        foreach ($chartresult as $Secondkey => $value1) {
+            if ($value->id == $value1->category_id) {
+                $total += (float)$value1->price * (float)$value1->qty;
+            }
+        }
+        $result[0] = $value->name;
+        $result[1] = $total;
+        $setyor[$Mainkey+1] = $result;
+        $Default_piechart = $setyor;
+        $data['chart_title'] = 'Report Current Year';
+        $data['pie_check'] = count($chartresult);
+
+        $year_groubby = "SELECT date_format(orders.created_at, '%Y') as yearlist
+        FROM orders LEFT JOIN `transactions`ON transactions.order_id=orders.id
+        WHERE transactions.status='approved'
+        GROUP BY  date_format(orders.created_at, '%Y')
+        ORDER BY date_format(orders.created_at, '%Y') DESC;";
+        $year = DB::select($year_groubby);
+        $yearlist = [];
+        foreach($year as $index=>$item){
+            $yearlist[$index]=$item->yearlist;
+        }
+        $data['yearlist'] = $yearlist;
+        }
+
+        $time = time();
+        $data['cur_month'] = date("m",$time);
+        $barsql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+        LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+        WHERE YEAR(orders.created_at) = YEAR(CURDATE()) AND transactions.status='approved' AND orders.status='delivered';";
+        $barresult = DB::select($barsql);
+        $product = Product::all();
+        $product_name = [];
+        $warp = [];
+        $product_name[0] = "Product";
+        $product_name[1] = "Total";
+        $warp[0] = $product_name;
+
+        foreach ($product as $Mainkey => $value) {
+        $total = 0.00;
+        $result = [];
+        foreach ($barresult as $Secondkey => $value1) {
+            if ($value->id == $value1->product_id) {
+                $total += (float)$value1->price * (float)$value1->qty;
+            }
+        }
+        $result[0] = $value->name;
+        $result[1] = $total;
+        $warp[$Mainkey+1] = $result;
+        $Default_barchart = $warp;
+        $data['bar_title'] = 'Report Current Year';
+        $data['bar_check'] = count($barresult);
+
+        $year_groubby = "SELECT date_format(orders.created_at, '%Y') as yearlist
+        FROM orders LEFT JOIN `transactions`ON transactions.order_id=orders.id
+        WHERE transactions.status='approved'
+        GROUP BY  date_format(orders.created_at, '%Y')
+        ORDER BY date_format(orders.created_at, '%Y') DESC;";
+        $year = DB::select($year_groubby);
+        $yearlist = [];
+        foreach($year as $index=>$item){
+            $yearlist[$index]=$item->yearlist;
+        }
+        $data['yearlist'] = $yearlist;
+        }
+
+        return view('livewire.admin.admin-reports-component', compact('Default_piechart', 'Default_barchart'), $data)->layout('layouts.admin-dash');
+    }
+
+    public function PieChange(Request $request)
+    {
+        if ($request->spie == '0')
+        {
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $sql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE DATE_FORMAT(orders.created_at, '%Y-%m-%d') = DATE_FORMAT('$request->Sdate1', '%Y-%m-%d') AND transactions.status='approved' AND orders.status='delivered';";
+            $chartresult = DB::select($sql);
+            $category = Category::all();
+            $category_name = [];
+            $setyor = [];
+            $category_name[0] = "Category";
+            $category_name[1] = "Total";
+            $setyor[0] = $category_name;
+            $data['chart_title'] = 'Report Date : '.$request->Sdate1;
+        }
+        else if($request->spie == '1')
+        {
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $month = $data['cur_month'] - $request->Mdate1;
+            $sql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE YEAR(orders.created_at) = YEAR(CURRENT_DATE) AND MONTH(orders.created_at) = MONTH(CURRENT_DATE - INTERVAL $month MONTH)
+            AND transactions.status='approved' AND orders.status='delivered';";
+            $chartresult = DB::select($sql);
+            $category = Category::all();
+            $category_name = [];
+            $setyor = [];
+            $category_name[0] = "Category";
+            $category_name[1] = "Total";
+            $setyor[0] = $category_name;
+            $month = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            $data['chart_title'] = 'Report Month : '.$month[$request->Mdate1-1];
+        }
+        else if($request->spie == '2')
+        {
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $sql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE YEAR(orders.created_at) = $request->Ydate1 AND transactions.status='approved' AND orders.status='delivered';";
+            $chartresult = DB::select($sql);
+            $category = Category::all();
+            $category_name = [];
+            $setyor = [];
+            $category_name[0] = "Category";
+            $category_name[1] = "Total";
+            $setyor[0] = $category_name;
+            $data['chart_title'] = 'Report Year : '.$request->Ydate1;
+        }
+
+        foreach ($category as $Mainkey => $value) {
+            $total = 0.00;
+            $result = [];
+            foreach ($chartresult as $Secondkey => $value1) {
+                if ($value->id == $value1->category_id) {
+                    $total += (float)$value1->price * (float)$value1->qty;
+                }
+            }
+            $result[0] = $value->name;
+            $result[1] = $total;
+            $setyor[$Mainkey+1] = $result;
+            $Default_piechart = $setyor;
+            $data['pie_check'] = count($chartresult);
+        }
+            $year_groubby = "SELECT date_format(orders.created_at, '%Y') as yearlist
+            FROM orders LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE transactions.status='approved' AND orders.status='delivered'
+            GROUP BY  date_format(orders.created_at, '%Y')
+            ORDER BY date_format(orders.created_at, '%Y') DESC;";
+            $year = DB::select($year_groubby);
+            $yearlist = [];
+            foreach($year as $index=>$item){
+                $yearlist[$index]=$item->yearlist;
+            }
+            $data['yearlist'] = $yearlist;
+
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $barsql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+            LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE YEAR(orders.created_at) = YEAR(CURDATE()) AND transactions.status='approved' AND orders.status='delivered';";
+            $barresult = DB::select($barsql);
+            $product = Product::all();
+            $product_name = [];
+            $warp = [];
+            $product_name[0] = "Product";
+            $product_name[1] = "Total";
+            $warp[0] = $product_name;
+
+            foreach ($product as $Mainkey => $value) {
+            $total = 0.00;
+            $result = [];
+            foreach ($barresult as $Secondkey => $value1) {
+                if ($value->id == $value1->product_id) {
+                    $total += (float)$value1->price * (float)$value1->qty;
+                }
+            }
+            $result[0] = $value->name;
+            $result[1] = $total;
+            $warp[$Mainkey+1] = $result;
+            $Default_barchart = $warp;
+            $data['bar_title'] = 'Report Current Year';
+            $data['bar_check'] = count($barresult);
+            }
+
+        return view('livewire.admin.admin-reports-component', compact('Default_piechart', 'Default_barchart'), $data)->layout('layouts.admin-dash');
+    }
+
+    public function BarChange(Request $request)
+    {
+        if ($request->sbar == '0')
+        {
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $barsql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+            LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE DATE_FORMAT(orders.created_at, '%Y-%m-%d') = DATE_FORMAT('$request->sdate2', '%Y-%m-%d') AND transactions.status='approved' AND orders.status='delivered';";
+            $barresult = DB::select($barsql);
+            $product = Product::all();
+            $product_name = [];
+            $warp = [];
+            $product_name[0] = "Product";
+            $product_name[1] = "Total";
+            $warp[0] = $product_name;
+            $data['bar_title'] = 'Report Date : '.$request->sdate2;
+        }
+        else if($request->sbar == '1')
+        {
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $month = $data['cur_month'] - $request->Mdate2;
+            $barsql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+            LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE YEAR(orders.created_at) = YEAR(CURRENT_DATE) AND MONTH(orders.created_at) = MONTH(CURRENT_DATE - INTERVAL $month MONTH)
+            AND transactions.status='approved' AND orders.status='delivered';";
+            $barresult = DB::select($barsql);
+            $product = Product::all();
+            $product_name = [];
+            $warp = [];
+            $product_name[0] = "Product";
+            $product_name[1] = "Total";
+            $warp[0] = $product_name;
+            $month = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            $data['bar_title'] = 'Report Month : '.$month[$request->Mdate2-1];
+        }
+        else if($request->sbar == '2')
+        {
+            $time = time();
+            $data['cur_month'] = date("m",$time);
+            $barsql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+            LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+            WHERE YEAR(orders.created_at) = $request->syear2 AND transactions.status='approved' AND orders.status='delivered';";
+            $barresult = DB::select($barsql);
+            $product = Product::all();
+            $product_name = [];
+            $warp = [];
+            $product_name[0] = "Product";
+            $product_name[1] = "Total";
+            $warp[0] = $product_name;
+            $data['bar_title'] = 'Report Year : '.$request->syear2;
+        }
+
+        foreach ($product as $Mainkey => $value) {
+            $total = 0.00;
+            $result = [];
+            foreach ($barresult as $Secondkey => $value1) {
+                if ($value->id == $value1->product_id) {
+                    $total += (float)$value1->price * (float)$value1->qty;
+                }
+            }
+            $result[0] = $value->name;
+            $result[1] = $total;
+            $warp[$Mainkey+1] = $result;
+            $Default_barchart = $warp;
+            $data['bar_check'] = count($barresult);
+        }
+
+        $year_groubby = "SELECT date_format(orders.created_at, '%Y') as yearlist
+        FROM orders LEFT JOIN `transactions`ON transactions.order_id=orders.id
+        WHERE transactions.status='approved'
+        GROUP BY  date_format(orders.created_at, '%Y')
+        ORDER BY date_format(orders.created_at, '%Y') DESC;";
+        $year = DB::select($year_groubby);
+        $yearlist = [];
+        foreach($year as $index=>$item){
+            $yearlist[$index]=$item->yearlist;
+        }
+        $data['yearlist'] = $yearlist;
+
+        $time = time();
+        $data['cur_month'] = date("m",$time);
+        $sql = "SELECT * FROM `orders` LEFT JOIN `order_items` ON order_items.order_id=orders.id LEFT JOIN `products` ON products.id=order_items.product_id
+        LEFT JOIN `categories`ON categories.id=products.category_id LEFT JOIN `transactions`ON transactions.order_id=orders.id
+        WHERE YEAR(orders.created_at) = YEAR(CURDATE()) AND transactions.status='approved' AND orders.status='delivered';";
+        $chartresult = DB::select($sql);
+        $category = Category::all();
+        $category_name = [];
+        $setyor = [];
+        $category_name[0] = "Category";
+        $category_name[1] = "Total";
+        $setyor[0] = $category_name;
+
+        foreach ($category as $Mainkey => $value) {
+        $total = 0.00;
+        $result = [];
+        foreach ($chartresult as $Secondkey => $value1) {
+            if ($value->id == $value1->category_id) {
+                $total += (float)$value1->price * (float)$value1->qty;
+            }
+        }
+        $result[0] = $value->name;
+        $result[1] = $total;
+        $setyor[$Mainkey+1] = $result;
+        $Default_piechart = $setyor;
+        $data['chart_title'] = 'Report Current Year';
+        $data['pie_check'] = count($chartresult);
+        }
+
+        return view('livewire.admin.admin-reports-component', compact('Default_barchart', 'Default_piechart'), $data)->layout('layouts.admin-dash');
+    }
+}
