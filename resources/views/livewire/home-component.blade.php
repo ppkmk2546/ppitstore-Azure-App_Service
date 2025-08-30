@@ -12,7 +12,7 @@
                         <div class="row">
                             <div class="col-lg-7 col-12">
                                 <div class="hero-text">
-                                    <h1><span style="color: #fff">NEW PRODUCTS ON SALE!!! </span>Nvidia RTX 3090</h1>
+                                    <h1><span style="color: #fff">HOT SALE NEW PRODUCTS ON SALE!!! </span>Nvidia RTX 3090</h1>
                                     <p style="color: #fff">Nvidia has release new gpu in this year <br> The new gpu is RTX 3090. <br> Available now at VITZARD COMPUTER!</p>
                                     <div class="button">
                                         <a href="{{asset('/product/vga-asus-rog-strix-rtx3090-o24g-gaming-24gb-gddr6x')}}" class="btn">Buy Now!</a>
